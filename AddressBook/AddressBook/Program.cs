@@ -5,5 +5,8 @@ internal class Program
     public static void Main(String[] args)
     { 
        AddressBook.PersonData.CreateContacts();
+       AddressBook.PersonData.DisplayContacts();
+       AddressBook.PersonData.EditContacts();
+       AddressBook.PersonData.DisplayContacts();
     }
 }

@@ -29,6 +29,68 @@ namespace AddressBook
             contacts.Email = Console.ReadLine();
             Program.addContacts.Add(contacts);
         }
-        
+        public static void DisplayContacts()
+        {
+            if (Program.addContacts.Count == 0)
+            {
+                Console.WriteLine("Address Book is Empty");
+            }
+            Console.WriteLine("Contacts List:");
+            foreach (var contacts in Program.addContacts)
+            {
+                Console.WriteLine("First Name: " + contacts.FirstName + "\nLast Name: " + contacts.LastName + "\nAddress: " + contacts.Address + "\nCity: " + contacts.City + "\nState: " + contacts.State + "\nZipcode: " + contacts.Zipcode + "\nPhone Number: " + contacts.PhoneNumber + "\nEmail: " + contacts.Email);
+            }
+        }
+        public static void EditContacts()
+        {
+            Console.WriteLine("Enter First Name of the Person to Edit Details");
+            string fName = Console.ReadLine();
+            foreach (var contacts in Program.addContacts)
+            {
+                if (contacts.FirstName.Equals(fName))
+                {
+                    Console.WriteLine("Select option to edit: \n1. First Name\n2. Last Name\n3.Address\n4. City\n5. State\n6. Zipcode\n7. Phone Number\n8. Email");
+                    int num = Convert.ToInt32(Console.ReadLine());
+                    switch (num)
+                    {
+                        case 1:
+                            Console.WriteLine("Enter First Name to Update");
+                            contacts.FirstName = Convert.ToString(Console.ReadLine());
+                            break;
+                        case 2:
+                            Console.WriteLine("Enter Last Name to Update");
+                            contacts.LastName = Convert.ToString(Console.ReadLine());
+                            break;
+                        case 3:
+                            Console.WriteLine("Enter Address to Update");
+                            contacts.Address = Convert.ToString(Console.ReadLine());
+                            break;
+                        case 4:
+                            Console.WriteLine("Enter City to Update");
+                            contacts.City = Convert.ToString(Console.ReadLine());
+                            break;
+                        case 5:
+                            Console.WriteLine("Enter State to Update");
+                            contacts.State = Convert.ToString(Console.ReadLine());
+                            break;
+                        case 6:
+                            Console.WriteLine("Enter Zipcode to Update");
+                            contacts.Zipcode = Convert.ToInt32(Console.ReadLine());
+                            break;
+                        case 7:
+                            Console.WriteLine("Enter Phone Number to Update");
+                            contacts.PhoneNumber = Convert.ToDouble(Console.ReadLine());
+                            break;
+                        case 8:
+                            Console.WriteLine("Enter Email to Update");
+                            contacts.Email = Convert.ToString(Console.ReadLine());
+                            break;
+                        default:
+                            Console.WriteLine("Invalid Option");
+                            break;
+                    }
+                }
+            }
+        }
     }
 }
