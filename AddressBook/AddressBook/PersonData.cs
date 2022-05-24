@@ -41,7 +41,7 @@ namespace AddressBook
                 Console.WriteLine("First Name: " + contacts.FirstName + "\nLast Name: " + contacts.LastName + "\nAddress: " + contacts.Address + "\nCity: " + contacts.City + "\nState: " + contacts.State + "\nZipcode: " + contacts.Zipcode + "\nPhone Number: " + contacts.PhoneNumber + "\nEmail: " + contacts.Email);
             }
         }
-        public static void EditContacts()
+        public static void EditContact()
         {
             Console.WriteLine("Enter First Name of the Person to Edit Details");
             string fName = Console.ReadLine();
@@ -89,6 +89,18 @@ namespace AddressBook
                             Console.WriteLine("Invalid Option");
                             break;
                     }
+                }
+            }          
+        }
+        public static void DeleteContact()
+        {
+            Console.WriteLine("Enter First Name of the Person to Delete Details");
+            string Name = Console.ReadLine();
+            foreach (var contacts in Program.addContacts.ToList())
+            {
+                if (contacts.FirstName.Equals(Name))
+                {
+                    Program.addContacts.Remove(contacts);
                 }
             }
         }
