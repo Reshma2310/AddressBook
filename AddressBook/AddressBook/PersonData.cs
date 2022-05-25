@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AddressBook
 {
-    internal class PersonData
+    public class PersonData
     {
         public static void CreateContacts()
         {
@@ -104,7 +104,7 @@ namespace AddressBook
                 }
             }
         }
-        public static void AddMultipleContacts()
+        public void AddMultipleContacts()
         {
             Console.WriteLine("Number of Contacts you want to add: ");
             int number = Convert.ToInt32(Console.ReadLine());
@@ -112,6 +112,21 @@ namespace AddressBook
             {
                 CreateContacts();
                 number--;
+            }
+        }
+        public static void AddMultipleAddressBooks()
+        {
+            Dictionary<string, List<Contacts>> addMultiple = new Dictionary<string, List<Contacts>>();
+            Console.WriteLine("Number of Address Books you want to add");
+            int no = Convert.ToInt32(Console.ReadLine());
+            while (no > 0)
+            {
+                Console.WriteLine("Enter Address Book name");
+                string name = Console.ReadLine();
+                PersonData personData = new PersonData();
+                personData.AddMultipleContacts();
+                addMultiple.Add(name, Program.addContacts);
+                no--;
             }
         }
     }

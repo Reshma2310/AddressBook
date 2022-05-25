@@ -1,12 +1,12 @@
 ﻿using AddressBook;
 internal class Program
 {
-    public static List<Contacts> addContacts = new List<Contacts>();
+    public static List<Contacts> addContacts = new List<Contacts>();    
     public static void Main(String[] args)
     {
-        Console.WriteLine("Select an option to perform\n1. Create Contacts\n2. Display Contacts\n3. Edit Contact\n4. Delect Contact\n5. Add Multiple Contacts\n6. End the Program");
+        Console.WriteLine("Select an option to perform\n1. Create Contacts\n2. Display Contacts\n3. Edit Contact\n4. Delect Contact\n5. Add Multiple Contacts\n6. Add Multiple Address Books\n7. End the Program");
         int num = Convert.ToInt32(Console.ReadLine());
-        while (num != 6)
+        while (num != 7)
         { 
             switch (num)
             {
@@ -23,13 +23,17 @@ internal class Program
                     AddressBook.PersonData.DeleteContact();
                     break;
                 case 5:
-                    AddressBook.PersonData.AddMultipleContacts();
+                    PersonData person = new PersonData();
+                    person.AddMultipleContacts();
+                    break;
+                case 6:
+                    AddressBook.PersonData.AddMultipleAddressBooks();
                     break;
                 default:
                     Console.WriteLine("Invalid Input");
                     break;
             }
-            Console.WriteLine("Select an option\n1. Create Contacts\n2. Display Contacts\n3. Edit Contact\n4. Delect Contact\n5. Add Multiple Contacts\n6. End the Program");
+            Console.WriteLine("Select an option\n1. Create Contacts\n2. Display Contacts\n3. Edit Contact\n4. Delect Contact\n5. Add Multiple Contacts\n6. Add Multiple Address Books\n7. End the Program");
             num = Convert.ToInt32(Console.ReadLine());
         }
     }
