@@ -3,38 +3,48 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace AddressBook
 {
     public class PersonData
     {
-        List<Contacts> addContacts = new List<Contacts>();               
+        Contacts contacts;
+        List<Contacts> addContacts = new List<Contacts>();
+        Dictionary<string, List<Contacts>> addMultiple = new Dictionary<string, List<Contacts>>();        
         public void CreateContacts()
         {
-            Contacts contacts = new Contacts();
-            Console.WriteLine("Enter First Name");
-            contacts.FirstName = Console.ReadLine();
-            Contacts contact = addContacts.FirstOrDefault(p => p.Equals(contacts));
-            if (contact == null)
+            contacts = new Contacts();
+            bool value = true;
+            while (value)
             {
-                Console.WriteLine("Enter Last Name");
-                contacts.LastName = Console.ReadLine();
-                Console.WriteLine("Enter Address");
-                contacts.Address = Console.ReadLine();
-                Console.WriteLine("Enter City");
-                contacts.City = Console.ReadLine();
-                Console.WriteLine("Enter State");
-                contacts.State = Console.ReadLine();
-                Console.WriteLine("Enter Zipcode");
-                contacts.Zipcode = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("Enter Mobile Number");
-                contacts.PhoneNumber = Convert.ToDouble(Console.ReadLine());
-                Console.WriteLine("Enter Email");
-                contacts.Email = Console.ReadLine();
-                Program.addContacts.Add(contacts);
+                Console.WriteLine("Enter First Name");
+                contacts.FirstName = Console.ReadLine();
+                if (addContacts.Any(p => p.FirstName.Equals(contacts.FirstName)))
+                {
+
+                    Console.WriteLine("Contact already exit in  your address book:");
+                }
+                else
+                {
+                    value = false;
+                }
             }
-            else
-            Console.WriteLine("Contact Already exists");
+            Console.WriteLine("Enter Last Name");
+            contacts.LastName = Console.ReadLine();
+            Console.WriteLine("Enter Address");
+            contacts.Address = Console.ReadLine();
+            Console.WriteLine("Enter City");
+            contacts.City = Console.ReadLine();
+            Console.WriteLine("Enter State");
+            contacts.State = Console.ReadLine();
+            Console.WriteLine("Enter Zipcode");
+            contacts.Zipcode = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter Mobile Number");
+            contacts.PhoneNumber = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("Enter Email");
+            contacts.Email = Console.ReadLine();
+            Program.addContacts.Add(contacts);
         }
         public static void DisplayContacts()
         {
@@ -144,5 +154,59 @@ namespace AddressBook
                 }
             }
         }
+        public void SearchByCityorState()
+        {
+            AddMultipleAddressBooks();
+            Console.WriteLine("1. Search contacts by City\n2.Search contacts by State");
+            Console.WriteLine("Enter your choice:");
+            int choice = Convert.ToInt32(Console.ReadLine());
+            switch (choice)
+            {
+                case 1:
+                    {
+                        Console.WriteLine("Enter a city Name to be search: ");
+                        string searchCity = Console.ReadLine();
+                        foreach (var contact in addMultiple.ToList())
+                        {
+                            Console.WriteLine("Group Name is :" + contact.Key + " \n");
+                            foreach (var person in contact.Value.FindAll(e => (e.City.Equals(searchCity))).ToList())
+                            {
+                                Console.WriteLine("First Name: " + person.FirstName + "\nLast Name: " + person.LastName + "\nAddress: " + person.Address + "\nCity: " + person.City + "\nState: " + person.State + "\nZipcode: " + person.Zipcode + "\nPhone Number: " + person.PhoneNumber + "\nEmail: " + person.Email);
+                            }
+                        }
+                        break;
+                    }
+                case 2:
+                    {
+                        Console.WriteLine("Enter a state Name to be search: ");
+                        string searchState = Console.ReadLine();
+                        foreach (var contact in addMultiple)
+                        {
+                            Console.WriteLine("Group Name is :" + contact.Key + " \n");
+                            foreach (var person in contact.Value.FindAll(e => (e.State.Equals(searchState))).ToList())
+                            {
+                                Console.WriteLine("First Name: " + person.FirstName + "\nLast Name: " + person.LastName + "\nAddress: " + person.Address + "\nCity: " + person.City + "\nState: " + person.State + "\nZipcode: " + person.Zipcode + "\nPhone Number: " + person.PhoneNumber + "\nEmail: " + person.Email);
+                            }
+                        }
+                        break;
+                    }                    
+            }
+
+        }
+        /*public void SearchByCityorState()
+        {
+            Console.WriteLine("Please Enter the name of City or State:");
+            string SearchCityOrState = Console.ReadLine();
+            foreach (var person in addContacts)
+            {
+                if (addContacts.Exists(person => (person.City == SearchCityOrState) || (person.State == SearchCityOrState)))
+                {
+                    if ((person.City == SearchCityOrState) || (person.State == SearchCityOrState))
+                    {
+                        Console.WriteLine("First Name: " + person.FirstName + "\nLast Name: " + person.LastName + "\nAddress: " + person.Address + "\nCity: " + person.City + "\nState: " + person.State + "\nZipcode: " + person.Zipcode + "\nPhone Number: " + person.PhoneNumber + "\nEmail: " + person.Email);
+                    }
+                }
+            }
+        }*/
     }
 }
