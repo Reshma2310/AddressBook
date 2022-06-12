@@ -224,7 +224,46 @@ namespace AddressBook
                 Console.WriteLine("Contacts from state: " + key);
                 ByState[key].ForEach(x => Console.WriteLine(x));
             }
+        }
+        public void GetCount()
+        {
+            foreach (var key in addMultiple.Keys)
+            {
+                foreach (var item in addMultiple[key])
+                {
 
+                    if (ByCity.ContainsKey(item.City))
+                        ByCity[item.City].Add(item.FirstName + " " + item.LastName);
+                    else
+                        ByCity.Add(item.City, new List<string>() { item.FirstName + " " + item.LastName });
+                    if (ByState.ContainsKey(item.State))
+                        ByState[item.State].Add(item.FirstName + " " + item.LastName);
+                    else
+                        ByState.Add(item.State, new List<string>() { item.FirstName + " " + item.LastName });
+                }
+            }
+            Console.WriteLine("No. of contacts by city.");
+            foreach (var key in ByCity.Keys)
+            {
+                Func<int, int> count = x =>
+                {
+                    foreach (var value in ByCity[key])
+                        x += 1;
+                    return x;
+                };
+                Console.WriteLine("No. of contacts in city " + key + " are " + count(0));
+            }
+            Console.WriteLine("No. of contacts by state.");
+            foreach (var key in ByState.Keys)
+            {
+                Func<int, int> count = x =>
+                {
+                    foreach (var value in ByState[key])
+                        x += 1;
+                    return x;
+                };
+                Console.WriteLine("No. of contacts in state " + key + " are " + count(0));
+            }
         }
     }
 }
