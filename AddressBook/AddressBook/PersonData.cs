@@ -8,26 +8,33 @@ namespace AddressBook
 {
     public class PersonData
     {
-        public static void CreateContacts()
+        List<Contacts> addContacts = new List<Contacts>();               
+        public void CreateContacts()
         {
             Contacts contacts = new Contacts();
             Console.WriteLine("Enter First Name");
             contacts.FirstName = Console.ReadLine();
-            Console.WriteLine("Enter Last Name");
-            contacts.LastName = Console.ReadLine();
-            Console.WriteLine("Enter Address");
-            contacts.Address = Console.ReadLine();
-            Console.WriteLine("Enter City");
-            contacts.City = Console.ReadLine();
-            Console.WriteLine("Enter State");
-            contacts.State = Console.ReadLine();
-            Console.WriteLine("Enter Zipcode");
-            contacts.Zipcode = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Enter Mobile Number");
-            contacts.PhoneNumber = Convert.ToDouble(Console.ReadLine());
-            Console.WriteLine("Enter Email");
-            contacts.Email = Console.ReadLine();
-            Program.addContacts.Add(contacts);
+            Contacts contact = addContacts.FirstOrDefault(p => p.Equals(contacts));
+            if (contact == null)
+            {
+                Console.WriteLine("Enter Last Name");
+                contacts.LastName = Console.ReadLine();
+                Console.WriteLine("Enter Address");
+                contacts.Address = Console.ReadLine();
+                Console.WriteLine("Enter City");
+                contacts.City = Console.ReadLine();
+                Console.WriteLine("Enter State");
+                contacts.State = Console.ReadLine();
+                Console.WriteLine("Enter Zipcode");
+                contacts.Zipcode = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Enter Mobile Number");
+                contacts.PhoneNumber = Convert.ToDouble(Console.ReadLine());
+                Console.WriteLine("Enter Email");
+                contacts.Email = Console.ReadLine();
+                Program.addContacts.Add(contacts);
+            }
+            else
+            Console.WriteLine("Contact Already exists");
         }
         public static void DisplayContacts()
         {
@@ -90,7 +97,7 @@ namespace AddressBook
                             break;
                     }
                 }
-            }          
+            }
         }
         public static void DeleteContact()
         {
@@ -108,7 +115,7 @@ namespace AddressBook
         {
             Console.WriteLine("Number of Contacts you want to add: ");
             int number = Convert.ToInt32(Console.ReadLine());
-            while(number > 0)
+            while (number > 0)
             {
                 CreateContacts();
                 number--;
@@ -127,6 +134,14 @@ namespace AddressBook
                 personData.AddMultipleContacts();
                 addMultiple.Add(name, Program.addContacts);
                 no--;
+            }
+            foreach (var book in addMultiple)
+            {
+                Console.WriteLine("Grouping Name is :" + book.Key + "\n");
+                foreach (var person in book.Value)
+                {
+                    Console.WriteLine("First Name: " + person.FirstName + "\nLast Name: " + person.LastName + "\nAddress: " + person.Address + "\nCity: " + person.City + "\nState: " + person.State + "\nZipcode: " + person.Zipcode + "\nPhone Number: " + person.PhoneNumber + "\nEmail: " + person.Email);
+                }
             }
         }
     }

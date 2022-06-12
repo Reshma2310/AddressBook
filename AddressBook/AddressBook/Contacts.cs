@@ -15,6 +15,18 @@ namespace AddressBook
         public string State { get; set; }
         public int Zipcode { get; set; }
         public double PhoneNumber { get; set; }
-        public string Email { get; set; }     
+        public string Email { get; set; }
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            if (!(obj is Contacts))
+            {
+                return false;
+            }
+            return this.FirstName == ((Contacts)obj).FirstName;
+        }
     }
 }
