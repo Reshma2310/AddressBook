@@ -12,8 +12,8 @@ namespace AddressBook
         Contacts contacts;
         List<Contacts> addContacts = new List<Contacts>();
         Dictionary<string, List<Contacts>> addMultiple = new Dictionary<string, List<Contacts>>();
-        Dictionary<string, List<string>> ByCity = new Dictionary<string, List<string>>();
-        Dictionary<string, List<string>> ByState = new Dictionary<string, List<string>>();
+        Dictionary<string, List<Contacts>> DisplayCity = new Dictionary<string, List<Contacts>>();
+        Dictionary<string, List<Contacts>> DisplayState = new Dictionary<string, List<Contacts>>();
         public void CreateContacts()
         {
             contacts = new Contacts();
@@ -46,25 +46,26 @@ namespace AddressBook
             contacts.PhoneNumber = Convert.ToDouble(Console.ReadLine());
             Console.WriteLine("Enter Email");
             contacts.Email = Console.ReadLine();
-            Program.addContacts.Add(contacts);
+            addContacts.Add(contacts);
+            Console.WriteLine();
         }
-        public static void DisplayContacts()
+        public void DisplayContacts()
         {
-            if (Program.addContacts.Count == 0)
+            if (addContacts.Count == 0)
             {
                 Console.WriteLine("Address Book is Empty");
             }
             Console.WriteLine("Contacts List:");
-            foreach (var contacts in Program.addContacts)
+            foreach (var contacts in addContacts)
             {
                 Console.WriteLine("First Name: " + contacts.FirstName + "\nLast Name: " + contacts.LastName + "\nAddress: " + contacts.Address + "\nCity: " + contacts.City + "\nState: " + contacts.State + "\nZipcode: " + contacts.Zipcode + "\nPhone Number: " + contacts.PhoneNumber + "\nEmail: " + contacts.Email);
             }
         }
-        public static void EditContact()
+        public void EditContact()
         {
             Console.WriteLine("Enter First Name of the Person to Edit Details");
             string fName = Console.ReadLine();
-            foreach (var contacts in Program.addContacts)
+            foreach (var contacts in addContacts)
             {
                 if (contacts.FirstName.Equals(fName))
                 {
@@ -111,15 +112,15 @@ namespace AddressBook
                 }
             }
         }
-        public static void DeleteContact()
+        public void DeleteContact()
         {
             Console.WriteLine("Enter First Name of the Person to Delete Details");
             string Name = Console.ReadLine();
-            foreach (var contacts in Program.addContacts.ToList())
+            foreach (var contacts in addContacts.ToList())
             {
                 if (contacts.FirstName.Equals(Name))
                 {
-                    Program.addContacts.Remove(contacts);
+                    addContacts.Remove(contacts);
                 }
             }
         }
@@ -127,24 +128,23 @@ namespace AddressBook
         {
             Console.WriteLine("Number of Contacts you want to add: ");
             int number = Convert.ToInt32(Console.ReadLine());
+            addContacts = new List<Contacts>();
             while (number > 0)
             {
                 CreateContacts();
                 number--;
             }
         }
-        public static void AddMultipleAddressBooks()
+        public void AddMultipleAddressBooks()
         {
-            Dictionary<string, List<Contacts>> addMultiple = new Dictionary<string, List<Contacts>>();
             Console.WriteLine("Number of Address Books you want to add");
             int no = Convert.ToInt32(Console.ReadLine());
             while (no > 0)
             {
                 Console.WriteLine("Enter Address Book name");
                 string name = Console.ReadLine();
-                PersonData personData = new PersonData();
-                personData.AddMultipleContacts();
-                addMultiple.Add(name, Program.addContacts);
+                AddMultipleContacts();
+                addMultiple.Add(name, addContacts);
                 no--;
             }
             foreach (var book in addMultiple)
@@ -159,8 +159,7 @@ namespace AddressBook
         public void SearchByCityorState()
         {
             AddMultipleAddressBooks();
-            Console.WriteLine("1. Search contacts by City\n2.Search contacts by State");
-            Console.WriteLine("Enter your choice:");
+            Console.WriteLine("Enter your choice:\n1. Search contacts by City\n2.Search contacts by State");
             int choice = Convert.ToInt32(Console.ReadLine());
             switch (choice)
             {
@@ -168,7 +167,7 @@ namespace AddressBook
                     {
                         Console.WriteLine("Enter a city Name to be search: ");
                         string searchCity = Console.ReadLine();
-                        foreach (var contact in addMultiple.ToList())
+                        foreach (var contact in addMultiple)
                         {
                             Console.WriteLine("Group Name is :" + contact.Key + " \n");
                             foreach (var person in contact.Value.FindAll(e => (e.City.Equals(searchCity))).ToList())
@@ -191,78 +190,97 @@ namespace AddressBook
                             }
                         }
                         break;
-                    }                    
+                    }
             }
         }
         public void DisplayByCityOrState()
         {
-            foreach (var key in addMultiple.Keys)
-            {
-                foreach (var item in addMultiple[key])
-                {
+            AddMultipleAddressBooks();
 
-                    if (ByCity.ContainsKey(item.City))
-                        ByCity[item.City].Add(item.FirstName + " " + item.LastName);
+            foreach (var bookName in addMultiple)
+            {
+                foreach (var data in bookName.Value)
+                {
+                    if (DisplayCity.ContainsKey(data.City))
+                    {
+                        DisplayCity[data.City].Add(data);
+                    }
                     else
-                        ByCity.Add(item.City, new List<string>() { item.FirstName + " " + item.LastName });
-                    if (ByState.ContainsKey(item.State))
-                        ByState[item.State].Add(item.FirstName + " " + item.LastName);
+                    {
+                        DisplayCity.Add(data.City, new List<Contacts>() { data });
+                    }
+                    if (DisplayState.ContainsKey(data.State))
+                    {
+                        DisplayState[data.State].Add(data);
+                    }
                     else
-                        ByState.Add(item.State, new List<string>() { item.FirstName + " " + item.LastName });
+                    {
+                        DisplayState.Add(data.State, new List<Contacts>() { data });
+                    }
                 }
             }
-            Console.WriteLine("Contacts by city:");
-            foreach (var key in ByCity.Keys)
+            Console.WriteLine("Display Contacts in Cities");
+            foreach (var key in DisplayCity.Keys)
             {
-                Console.WriteLine("Contacts from city:" + key);
-                ByCity[key].ForEach(x => Console.WriteLine(x));
-
+                Console.WriteLine("Contacts in " + key + "\n");
+                DisplayCity[key].ForEach(e => Console.WriteLine("First Name: " + e.FirstName + "\nCity: " + e.City + "\n"));
             }
-            Console.WriteLine("Contacts by state:");
-            foreach (var key in ByState.Keys)
+            Console.WriteLine("Display Contacts in States");
+            foreach (var key in DisplayState.Keys)
             {
-                Console.WriteLine("Contacts from state: " + key);
-                ByState[key].ForEach(x => Console.WriteLine(x));
+                Console.WriteLine("Contacts in " + key + "\n");
+                DisplayState[key].ForEach(e => Console.WriteLine("First Name: " + e.FirstName + "\nCity: " + e.State + "\n"));
             }
         }
         public void GetCount()
         {
-            foreach (var key in addMultiple.Keys)
+            DisplayByCityOrState();
+            int cityCount = 0, stateCount = 0;
+            Console.WriteLine("Enter City Name to list Number of Contacts");
+            string searchCity = Console.ReadLine();
+            foreach (var key in DisplayCity.Keys)
             {
-                foreach (var item in addMultiple[key])
+                foreach (var value in DisplayCity[key].FindAll(e => (e.City.StartsWith(searchCity))))
                 {
-
-                    if (ByCity.ContainsKey(item.City))
-                        ByCity[item.City].Add(item.FirstName + " " + item.LastName);
-                    else
-                        ByCity.Add(item.City, new List<string>() { item.FirstName + " " + item.LastName });
-                    if (ByState.ContainsKey(item.State))
-                        ByState[item.State].Add(item.FirstName + " " + item.LastName);
-                    else
-                        ByState.Add(item.State, new List<string>() { item.FirstName + " " + item.LastName });
+                    cityCount++;
                 }
             }
-            Console.WriteLine("No. of contacts by city.");
-            foreach (var key in ByCity.Keys)
+            Console.WriteLine("Number of Contacts in " + searchCity + ": " + cityCount);
+            Console.WriteLine("Enter State Name to list Number of Contacts");
+            string searchState = Console.ReadLine();
+            foreach (var key in DisplayState.Keys)
             {
-                Func<int, int> count = x =>
+                foreach (var value in DisplayState[key].FindAll(e => (e.State.StartsWith(searchState))))
                 {
-                    foreach (var value in ByCity[key])
-                        x += 1;
-                    return x;
-                };
-                Console.WriteLine("No. of contacts in city " + key + " are " + count(0));
+                    stateCount++;
+                }
             }
-            Console.WriteLine("No. of contacts by state.");
-            foreach (var key in ByState.Keys)
+            Console.WriteLine("Number of Contacts in " + searchState + ": " + stateCount);
+        }
+        public void WriteTextFile()
+        {
+            string file = @"D:\BridgeLabs\AddressBook\AddressBook\AddressBook\DetailsTextFile.txt";
+            using StreamWriter writer = File.AppendText(file);
             {
-                Func<int, int> count = x =>
+                Console.WriteLine("\nFirst Name, LastName, Address, City, State, Zip Code, Phone Number, Email-(Use Comma Separator)");
+                writer.WriteLine(Console.ReadLine());
+                writer.Close();
+            }
+        }
+        public void ReadTextFile()
+        {
+            string file = @"D:\BridgeLabs\AddressBook\AddressBook\AddressBook\DetailsTextFile.txt";
+            string[] reader = File.ReadAllLines(file);
+            string[] array = { "First Name", "LastName", "Address", "City", "State", "Zip Code", "Phone Number", "Email" };
+
+            for (int i = 0; i < reader.Length; i++)
+            {
+                string[] details = reader[i].Split(",");
+                for (int j = 0; j < details.Length; j++)
                 {
-                    foreach (var value in ByState[key])
-                        x += 1;
-                    return x;
-                };
-                Console.WriteLine("No. of contacts in state " + key + " are " + count(0));
+                    Console.WriteLine(array[j] + ": " + details[j]);
+                }
+                Console.WriteLine();
             }
         }
     }
