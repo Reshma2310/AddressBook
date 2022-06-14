@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Newtonsoft.Json;
 
 namespace AddressBook
 {
@@ -307,6 +308,27 @@ namespace AddressBook
                     Console.WriteLine(array[j] + ": " + details[j]);
                 }
                 Console.WriteLine();
+            }
+        }
+        public void WriteJSONFile()
+        {
+            string filePath = @"D:\BridgeLabs\AddressBook\AddressBook\AddressBook\DetailsFileJSON.json";
+            AddMultipleContacts();
+            var json = JsonConvert.SerializeObject(addContacts);
+            File.WriteAllText(filePath, json);
+        }
+        public void ReadJSONFile()
+        {
+            string filePath = @"D:\BridgeLabs\AddressBook\AddressBook\AddressBook\DetailsFileJSON.json";
+            using (StreamReader file = new StreamReader(filePath))
+            {
+                var json = file.ReadToEnd();
+                var items = JsonConvert.DeserializeObject<List<Contacts>>(json);
+
+                foreach (var person in items)
+                {
+                    Console.WriteLine("\nFirst Name: " + person.FirstName + "\nLast Name: " + person.LastName + "\nAddress: " + person.Address + "\nCity: " + person.City + "\nState: " + person.State + "\nZipcode: " + person.Zipcode + "\nPhone Number: " + person.PhoneNumber + "\nEmail: " + person.Email +"\n");
+                }
             }
         }
     }
