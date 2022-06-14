@@ -262,7 +262,7 @@ namespace AddressBook
             string file = @"D:\BridgeLabs\AddressBook\AddressBook\AddressBook\DetailsTextFile.txt";
             using StreamWriter writer = File.AppendText(file);
             {
-                Console.WriteLine("\nFirst Name, LastName, Address, City, State, Zip Code, Phone Number, Email-(Use Comma Separator)");
+                Console.WriteLine("\nFirst Name, LastName, Address, City, State, Zip Code, Phone Number, Email");
                 writer.WriteLine(Console.ReadLine());
                 writer.Close();
             }
@@ -272,6 +272,32 @@ namespace AddressBook
             string file = @"D:\BridgeLabs\AddressBook\AddressBook\AddressBook\DetailsTextFile.txt";
             string[] reader = File.ReadAllLines(file);
             string[] array = { "First Name", "LastName", "Address", "City", "State", "Zip Code", "Phone Number", "Email" };
+
+            for (int i = 0; i < reader.Length; i++)
+            {
+                string[] details = reader[i].Split(",");
+                for (int j = 0; j < details.Length; j++)
+                {
+                    Console.WriteLine(array[j] + ": " + details[j]);
+                }
+                Console.WriteLine();
+            }
+        }
+        public void WriteCSVFile()
+        {
+            string file = @"D:\BridgeLabs\AddressBook\AddressBook\AddressBook\DetailsFileCSV.csv";
+            using StreamWriter writer = File.AppendText(file);
+            {
+                Console.WriteLine("\nFirst Name, Address, City, State, Zip Code, Phone Number, Email");
+                writer.WriteLine(Console.ReadLine());
+                writer.Close();
+            }
+        }
+        public void ReadCSVFile()
+        {
+            string file = @"D:\BridgeLabs\AddressBook\AddressBook\AddressBook\DetailsFileCSV.csv";
+            string[] reader = File.ReadAllLines(file);
+            string[] array = { "First Name", "Address", "City", "State", "Zip Code", "Phone Number", "Email" };
 
             for (int i = 0; i < reader.Length; i++)
             {

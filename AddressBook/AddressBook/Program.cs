@@ -11,7 +11,9 @@ namespace AddressBook
         public static void Main(string[] args)
         {
             PersonData person = new PersonData();
-            Console.WriteLine("apbcSelect an option to perform\n1. Create Contacts\n2. Display Contacts\n3. Edit Contact\n4. Delect Contact\n5. Add Multiple Contacts\n6. Add Multiple Address Books\n7. Search by City and State\n8. Display Contacts By City or State\n9. Get Count\n10. Write Contact Details into file\n11. Read Details from Files\n12. End the Program");
+            Console.WriteLine("Select an option\n1.Create Contacts\n2.Display Contacts\n3.Edit Contact\n4.Delect Contact\n5.Add Multiple Contacts\n" + 
+                    "6. Add Multiple Address Books\n7. Search by City and State\n8. Display Contacts By City or State\n9. Get Count\n10. Write & Read Contact Details using Text file\n" +
+                    "11. Write & Read Details using CSV Files\n12. End the Program");
             int num = Convert.ToInt32(Console.ReadLine());
             while (num != 12)
             {
@@ -45,16 +47,20 @@ namespace AddressBook
                         person.GetCount();
                         break;
                     case 10:
-                        person.WriteTextFile();                        
+                        person.WriteTextFile();
+                        person.ReadTextFile();
                         break;
                     case 11:
-                        person.ReadTextFile();
+                        person.WriteCSVFile();
+                        person.ReadCSVFile();
                         break;;
                     default:
                         Console.WriteLine("Invalid Input");
                         break;
                 }
-                Console.WriteLine("Select an option\n1. Create Contacts\n2. Display Contacts\n3. Edit Contact\n4. Delect Contact\n5. Add Multiple Contacts\n6. Add Multiple Address Books\n7. Search by City and State\n8. Display Contacts By City or State\n9. Get Count\n10. Write Contact Details into file\n11. Read Details from Files\n12. End the Program");
+                Console.WriteLine("Select an option\n1. Create Contacts\n2. Display Contacts\n3. Edit Contact\n4. Delect Contact\n5. Add Multiple Contacts\n" + 
+                    "6. Add Multiple Address Books\n7. Search by City and State\n8. Display Contacts By City or State\n9. Get Count\n10. Write & Read Contact Details using Text file\n" + 
+                    "11. Write & Read Details using CSV Files\n12. End the Program");
                 num = Convert.ToInt32(Console.ReadLine());
             }
         }
